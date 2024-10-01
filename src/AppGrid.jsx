@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid2';
 
 export default function AppGrid() {
   return (
-    <Grid container spacing={2}>    {/* `spacing={2}` es para que los botones tengan espaciado entre ellos */}
+    <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 4, lg: 2, xl: 6 }}>
             <Button variant='contained' fullWidth>Botón 1</Button>
         </Grid>
