@@ -11,65 +11,86 @@ import { useState } from 'react'
 
 
 function FormRegistro() {
-  const [data, setData] = useState({name:'', breed:''})
+  // Datos del formulario {Nombre, Apellidos, Edad}
+  const [data, setData] = useState({nombre:'', apellidos:'', edad:''})
 
-  const handleSubmit = (e) => {
+  const handleEnviar = (e) => {
     //Para que no mande el formulario, sino que haga lo que yo le diga
     e.preventDefault();
-    console.log(data)
-  
   }
 
-  const handleChangeName = (e) =>{
+  const handleChangeNombre = (e) =>{
     setData({
       ...data,
-      name: e.target.value
+      nombre: e.target.value
     })
-    //console.log(data)
   }
 
-
-  const handleChangeBreed = (e) =>{
+  const handleChangeApellidos = (e) =>{
     setData({
       ...data,
-      breed: e.target.value
+      apellidos: e.target.value
     })
-    //console.log(data)
+  }
+
+  const handleChangeEdad = (e) =>{
+    setData({
+      ...data,
+      edad: e.target.value
+    })
   }
 
   return(
     <Container>
-      <Paper elevation={3} square={false} sx={{textAlign:'center'}} >
-        <Typography variant='h6' color='elige el color' sx={{mt:2, mb:2}}>Registra tu mascota</Typography>
+      <Paper elevation={0} square={false} sx={{textAlign:'center'}} >
         <Box
           component='form'
-          onSubmit={handleSubmit}
+          onSubmit={handleEnviar}
         >
-          <Grid container spacing={0}>
+          <Grid container spacing={2}>
+
+            {/* Campo nombre */}
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField 
                 required
-                label='Nombre Mascota'
+                label='Nombre'
                 variant='outlined'
                 fullWidth
                 value={data.name}
-                onChange={handleChangeName}
-                
+                onChange={handleChangeNombre}
               />
             </Grid>
+
+            {/* Campo apellidos */}
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <TextField 
-                  label='Raza'
-                  variant='outlined'
-                  fullWidth
-                  value={data.breed}
-                  onChange={handleChangeBreed}
-                  
+                required
+                label='Apellidos'
+                variant='outlined'
+                fullWidth
+                value={data.name}
+                onChange={handleChangeApellidos}
               />
-            </Grid> 
-            <Grid size={12}>
-              <Button type='submit' variant='outlined' fullWidth>Registrar</Button>
             </Grid>
+
+            {/* Campo edad */}
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <TextField 
+                required
+                label='Edad'
+                variant='outlined'
+                fullWidth
+                value={data.name}
+                onChange={handleChangeEdad}
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 4, lg: 2, xl: 6 }}>
+                <Button variant='contained' fullWidth onClick={handleEnviar}>
+                  Enviar
+                </Button>
+            </Grid>
+
           </Grid>
         </Box>
       </Paper>
