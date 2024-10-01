@@ -19,6 +19,11 @@ function FormRegistro() {
     e.preventDefault();
   }
 
+  const handleLimpiar = (e) =>{
+    //Para que no mande el formulario, sino que haga lo que yo le diga
+    e.preventDefault();
+  }
+
   const handleChangeNombre = (e) =>{
     setData({
       ...data,
@@ -50,7 +55,8 @@ function FormRegistro() {
           <Grid container spacing={2}>
 
             {/* Campo nombre */}
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Grid size={4}
+             item xs={12} sm={6} md={4} lg={3}>
               <TextField 
                 required
                 label='Nombre'
@@ -62,7 +68,8 @@ function FormRegistro() {
             </Grid>
 
             {/* Campo apellidos */}
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Grid size={4}
+            item xs={12} sm={6} md={4} lg={3}>
               <TextField 
                 required
                 label='Apellidos'
@@ -74,7 +81,8 @@ function FormRegistro() {
             </Grid>
 
             {/* Campo edad */}
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Grid size={2}
+            item xs={12} sm={6} md={4} lg={3}>
               <TextField 
                 required
                 label='Edad'
@@ -85,9 +93,15 @@ function FormRegistro() {
               />
             </Grid>
 
-            <Grid size={{ xs: 12, md: 4, lg: 2, xl: 6 }}>
+            <Grid size={{ xs: 12, md: 4, lg: 2, xl: 3 }}>
                 <Button variant='contained' fullWidth onClick={handleEnviar}>
                   Enviar
+                </Button>
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 4, lg: 2, xl: 3 }} >
+                <Button variant='outlined' fullWidth onClick={handleLimpiar} color="error">
+                  Limpiar
                 </Button>
             </Grid>
 
