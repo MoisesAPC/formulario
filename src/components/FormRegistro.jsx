@@ -25,7 +25,8 @@ function FormRegistro() {
   // Datos del formulario {Nombre, Apellidos, Edad}
   const [data, setData] = useState({nombre:'', apellidos:'', edad:''})
   const [lenguaje, setLenguaje] = useState('');
-  const [puntuacion, setPuntuacion] = React.useState(2);
+  const [puntuacion, setPuntuacion] = React.useState(0);
+  const [condicionesAceptadas, setCondicionesAceptadas] = useState(false);
 
   const handleLenguajeProgramacionFavorito = (event) => {
     setLenguaje(event.target.value);
@@ -61,6 +62,10 @@ function FormRegistro() {
       edad: e.target.value
     })
   }
+
+  const handleCheckbox = (event) => {
+    setCondicionesAceptadas(event.target.checked);
+  };
 
   return(
     <Container>
@@ -166,8 +171,8 @@ function FormRegistro() {
 
               {/* Checkbox de "He leído los términos y condiciones" */}
               <Grid item size={{ xs: 12, md: 6, lg: 6, xl: 6 }}>
-                <FormControlLabel 
-                  control={<Checkbox />} 
+                <FormControlLabel
+                  control={<Checkbox checked={condicionesAceptadas} onChange={handleCheckbox}/>}
                   label="He leído los términos y condiciones"
                 />
               </Grid>
@@ -176,7 +181,7 @@ function FormRegistro() {
             <Grid container spacing={2}>
               {/* Botón de Enviar */}
               <Grid size={{ xs: 12, md: 6, lg: 6, xl: 6 }}>
-                  <Button variant='contained' fullWidth onClick={handleEnviar}>
+                  <Button variant='contained' fullWidth onClick={handleEnviar} disabled={!condicionesAceptadas}>
                     Enviar
                   </Button>
               </Grid>
