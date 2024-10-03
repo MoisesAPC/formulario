@@ -17,6 +17,11 @@ import FormLabel from '@mui/material/FormLabel'
 import Divider from '@mui/material/Divider'
 import Rating from '@mui/material/Rating'
 import Checkbox from '@mui/material/Checkbox'
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 import { useState } from 'react'
 
@@ -25,46 +30,114 @@ function FormRegistro() {
   // Datos del formulario {Nombre, Apellidos, Edad}
   const [data, setData] = useState({nombre:'', apellidos:'', edad:''})
   const [lenguaje, setLenguaje] = useState('');
+  const [genero, setGenero] = useState('');
   const [puntuacion, setPuntuacion] = React.useState(0);
   const [condicionesAceptadas, setCondicionesAceptadas] = useState(false);
+  const [open, setOpen] = React.useState(false);  // Para el diálogo de confirmación
+  const [formValido, setFormValido] = useState(false);  // Para comprobar que todos los campos required hayan sido rellenados previamente
+
+  const handleAbrirDialogoConfirmacion = () => {
+    setOpen(true);
+  };
+
+  const handleCerrarDialogoConfirmacion = () => {
+    setOpen(false);
+  };
 
   const handleLenguajeProgramacionFavorito = (event) => {
     setLenguaje(event.target.value);
+        
+    validarFormulario(data.nombre, data.apellidos, data.edad, event.target.value, genero, condicionesAceptadas);
+  };
+
+  const handleGenero = (event) => {
+    setGenero(event.target.value);
+        
+    validarFormulario(data.nombre, data.apellidos, data.edad, lenguaje, event.target.value, condicionesAceptadas);
   };
 
   const handleEnviar = (e) => {
     //Para que no mande el formulario, sino que haga lo que yo le diga
     e.preventDefault();
-  }
 
-  const handleLimpiar = (e) =>{
+    console.log({
+      ...data,
+      lenguaje,
+      genero,
+      puntuacion,
+      condicionesAceptadas
+    });
+
+    // Cerramos el diálogo
+    setOpen(false);
+
+    // Limpia los contenidos de las textboxes y otros elementos
+    // despues de cerrar el diálogo de confirmación (si le damos a "SÍ")
+    limpiarContenidos();
+  };
+
+  const handleLimpiar = (e) => {
     //Para que no mande el formulario, sino que haga lo que yo le diga
     e.preventDefault();
-  }
+
+    // Limpia los contenidos de las textboxes y otros elementos
+    limpiarContenidos();
+  };
 
   const handleChangeNombre = (e) =>{
     setData({
       ...data,
       nombre: e.target.value
-    })
-  }
+    });
+
+    validarFormulario(e.target.value, data.apellidos, data.edad, lenguaje, genero, condicionesAceptadas);
+  };
 
   const handleChangeApellidos = (e) =>{
     setData({
       ...data,
       apellidos: e.target.value
-    })
-  }
+    });
+        
+    validarFormulario(data.nombre, e.target.value, data.edad, lenguaje, genero, condicionesAceptadas);
+  };
 
   const handleChangeEdad = (e) =>{
     setData({
       ...data,
       edad: e.target.value
-    })
-  }
+    });
+        
+    validarFormulario(data.nombre, data.apellidos, e.target.value, lenguaje, genero, condicionesAceptadas);
+  };
 
   const handleCheckbox = (event) => {
     setCondicionesAceptadas(event.target.checked);
+        
+    validarFormulario(data.nombre, data.apellidos, data.edad, lenguaje, genero, event.target.checked);
+  };
+
+  // Limpia los contenidos de las textboxes, las encuestas, etc
+  const limpiarContenidos = () => {
+    setData({nombre: '', apellidos: '', edad: ''});
+    setLenguaje('');
+    setPuntuacion(0);
+    setGenero('');
+    setCondicionesAceptadas(false);
+    setFormValido(false);
+  };
+
+  // Si todos los campos con "required" han sido rellenados
+  // "esValido" pasará a ser a true, activando el botón de Enviar
+  const validarFormulario = (nombre, apellidos, edad, lenguaje, genero, condicionesAceptadas) => {
+    const esValido =
+      nombre.trim() !== '' &&
+      apellidos.trim() !== '' &&
+      edad.trim() !== '' &&
+      lenguaje !== '' &&
+      genero !== '' &&
+      condicionesAceptadas;
+    setFormValido(esValido);
   };
 
   return(
@@ -82,7 +155,7 @@ function FormRegistro() {
                 label='Nombre'
                 variant='outlined'
                 fullWidth
-                value={data.name}
+                value={data.nombre}
                 onChange={handleChangeNombre}
               />
             </Grid>
@@ -94,7 +167,7 @@ function FormRegistro() {
                 label='Apellidos'
                 variant='outlined'
                 fullWidth
-                value={data.name}
+                value={data.apellidos}
                 onChange={handleChangeApellidos}
               />
             </Grid>
@@ -103,10 +176,11 @@ function FormRegistro() {
             <Grid item size={{ xs: 12, md: 5, lg: 3, xl: 2 }}>
               <TextField 
                 required
+                type='number'
                 label='Edad'
                 variant='outlined'
                 fullWidth
-                value={data.name}
+                value={data.edad}
                 onChange={handleChangeEdad}
               />
             </Grid>
@@ -115,12 +189,14 @@ function FormRegistro() {
             {/* Lista de género */}
             <Grid container spacing={2} sx={{ mt: 2 }} justifyContent="flex-end">
               <Grid item size={{ xs: 12, md: 4, lg: 2, xl: 4 }}>
-                <FormControl>
+                <FormControl required>
                   <FormLabel id="demo-form-control-label-placement">Género</FormLabel>
                   <RadioGroup
                     row
                     aria-labelledby="demo-form-control-label-placement"
                     name="position"
+                    value={genero}
+                    onChange={handleGenero}
                   >
                     <FormControlLabel value="femenino" control={<Radio />} label="Femenino" />
                     <FormControlLabel value="masculino" control={<Radio />} label="Masculino" />
@@ -131,7 +207,7 @@ function FormRegistro() {
 
               {/* Lista del enguaje de programación favorito */}
               <Grid item size={{ xs: 12, md: 4, lg: 2, xl: 7 }}>
-                <FormControl fullWidth>
+                <FormControl required fullWidth>
                   <InputLabel id="demo-simple-select-label">Lenguaje de programación favorito</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
@@ -162,7 +238,7 @@ function FormRegistro() {
                 
                 <Rating
                   name="simple-controlled"
-                  puntuacion={puntuacion}
+                  value={puntuacion}
                   onChange={(event, newValue) => {
                     setPuntuacion(newValue);
                   }}
@@ -181,7 +257,7 @@ function FormRegistro() {
             <Grid container spacing={2}>
               {/* Botón de Enviar */}
               <Grid size={{ xs: 12, md: 6, lg: 6, xl: 6 }}>
-                  <Button variant='contained' fullWidth onClick={handleEnviar} disabled={!condicionesAceptadas}>
+                  <Button variant='contained' fullWidth onClick={handleAbrirDialogoConfirmacion} disabled={!formValido}>
                     Enviar
                   </Button>
               </Grid>
@@ -192,6 +268,32 @@ function FormRegistro() {
                     Limpiar
                   </Button>
               </Grid>
+
+              {/* Diálogo de confimación al pulsar en Enviar */}
+              <Dialog
+                open={open}
+                onClose={handleCerrarDialogoConfirmacion}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {"confirmación"}
+                </DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    ¿Estás seguro de que quieres mandar la encuesta?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCerrarDialogoConfirmacion}>
+                    NO
+                  </Button>
+                  <Button onClick={handleEnviar} autoFocus>
+                    SÍ
+                  </Button>
+                </DialogActions>
+              </Dialog>
+
             </Grid>
         </Box>
       </Paper>
