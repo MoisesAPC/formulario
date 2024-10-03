@@ -149,7 +149,7 @@ function FormRegistro() {
         >
           <Grid container spacing={2}>
             {/* Campo nombre */}
-            <Grid item size={{ xs: 12, md: 6, lg: 5, xl: 5 }}>
+            <Grid item size={{ xs: 12, md: 10, lg: 5, xl: 6 }}>
               <TextField 
                 required
                 label='Nombre'
@@ -161,7 +161,7 @@ function FormRegistro() {
             </Grid>
 
             {/* Campo apellidos */}
-            <Grid item size={{ xs: 12, md: 6, lg: 5, xl: 5 }}>
+            <Grid item size={{ xs: 12, md: 10, lg: 5, xl: 6 }}>
               <TextField 
                 required
                 label='Apellidos'
@@ -173,7 +173,7 @@ function FormRegistro() {
             </Grid>
 
             {/* Campo edad */}
-            <Grid item size={{ xs: 12, md: 5, lg: 3, xl: 2 }}>
+            <Grid item size={{ xs: 12, md: 5, lg: 2, xl: 1 }}>
               <TextField 
                 required
                 type='number'
@@ -188,7 +188,7 @@ function FormRegistro() {
 
             {/* Lista de género */}
             <Grid container spacing={2} sx={{ mt: 2 }} justifyContent="flex-end">
-              <Grid item size={{ xs: 12, md: 4, lg: 2, xl: 4 }}>
+              <Grid item size={{ xs: 12, md: 6, lg: 4, xl: 4 }}>
                 <FormControl required>
                   <FormLabel id="demo-form-control-label-placement">Género</FormLabel>
                   <RadioGroup
@@ -206,7 +206,7 @@ function FormRegistro() {
               </Grid>
 
               {/* Lista del enguaje de programación favorito */}
-              <Grid item size={{ xs: 12, md: 4, lg: 2, xl: 7 }}>
+              <Grid item size={{ xs: 12, md: 4, lg: 6, xl: 7 }}>
                 <FormControl required fullWidth>
                   <InputLabel id="demo-simple-select-label">Lenguaje de programación favorito</InputLabel>
                   <Select
